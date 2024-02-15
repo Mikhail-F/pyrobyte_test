@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pyrobyte_test/constans.dart';
+import 'package:pyrobyte_test/models/home_finance_item_model.dart';
+import 'package:pyrobyte_test/providers/home_provider.dart';
 import 'package:pyrobyte_test/styles/styles.dart';
 
 class HomeFinanceBlock extends StatelessWidget {
@@ -7,6 +10,7 @@ class HomeFinanceBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final homeWatch = context.watch<HomeProvider>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -21,30 +25,35 @@ class HomeFinanceBlock extends StatelessWidget {
           child: ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => _item(),
+              itemBuilder: (context, index) {
+                final HomeFinanceItemModel item =
+                    homeWatch.financeListItems[index];
+                return _item(item);
+              },
               separatorBuilder: (context, index) => const SizedBox(width: 10),
-              itemCount: 10),
+              itemCount: homeWatch.financeListItems.length),
         ),
       ],
     );
   }
 
-  Widget _item() {
+  Widget _item(HomeFinanceItemModel item) {
     return Container(
       height: 72,
       padding: const EdgeInsets.all(15),
-      decoration: const BoxDecoration(color: CustomColors.white),
+      decoration: BoxDecoration(
+          color: CustomColors.white, borderRadius: BorderRadius.circular(4)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset("assets/images/Money.png"),
+          Image.asset(item.image),
           const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("5700 Р", style: CustomStyles.jostMedium()),
-              Text("Деньги в ТА", style: CustomStyles.jostRegular()),
+              Text("${item.title} Р", style: CustomStyles.jostMedium()),
+              Text(item.subtitle, style: CustomStyles.jostRegular()),
             ],
           ),
         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pyrobyte_test/constans.dart';
 import 'package:pyrobyte_test/pages/home_page/home_page.dart';
+import 'package:pyrobyte_test/providers/home_provider.dart';
 import 'package:pyrobyte_test/providers/loading_bottom_sheet_provider.dart';
 
 void main() {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LoadingBottomSheetProvider()),
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
       ],
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
